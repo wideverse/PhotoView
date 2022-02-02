@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -139,6 +140,24 @@ public class SimpleSampleActivity extends AppCompatActivity {
         mPhotoView.setOnMatrixChangeListener(new MatrixChangeListener());
         mPhotoView.setOnPhotoTapListener(new PhotoTapListener());
         mPhotoView.setOnSingleFlingListener(new SingleFlingListener());
+
+        Button zoomIn = findViewById(R.id.zoomIn);
+        Button zoomOut = findViewById(R.id.zoomOut);
+
+        zoomIn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPhotoView.zoomIn();
+            }
+        });
+
+        zoomOut.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPhotoView.zoomOut();
+            }
+        });
+
     }
 
     private class PhotoTapListener implements OnPhotoTapListener {

@@ -21,8 +21,10 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
-
+import android.view.MotionEvent;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 
 /**
@@ -30,10 +32,11 @@ import androidx.appcompat.widget.AppCompatImageView;
  * is accomplished
  */
 @SuppressWarnings("unused")
-public class PhotoView extends AppCompatImageView {
+public class PhotoView extends AppCompatImageView implements GlassGestureDetector.GlassOnGestureListener {
 
     private PhotoViewAttacher attacher;
     private ScaleType pendingScaleType;
+    private GlassGestureDetector glassGestureDetector;
 
     public PhotoView(Context context) {
         this(context, null);
@@ -49,6 +52,7 @@ public class PhotoView extends AppCompatImageView {
     }
 
     private void init() {
+        glassGestureDetector = new GlassGestureDetector(this.getContext(), this);
         attacher = new PhotoViewAttacher(this);
         //We always pose as a Matrix scale type, though we can change to another scale type
         //via the attacher
@@ -252,5 +256,49 @@ public class PhotoView extends AppCompatImageView {
 
     public void setOnSingleFlingListener(OnSingleFlingListener onSingleFlingListener) {
         attacher.setOnSingleFlingListener(onSingleFlingListener);
+    }
+
+    @Override
+    public boolean onGesture(@NonNull GlassGestureDetector.Gesture gesture) {
+        switch (gesture) {
+            case TAP:
+                Log.d("testtest", "tap");
+                if (getScale() <= (getMaximumScale() - 0.5f))
+                    setScale(getScale() + 0.5f, true);
+                else
+                    setScale(getMinimumScale(), true);
+                return true;
+            case LONG_TAP:
+                Log.d("testtest", "long tap");
+                if (getScale() < getMaximumScale())
+                    setScale(getMaximumScale(), true);
+                else if (getScale() == getMaximumScale())
+                    setScale(getMinimumScale(), true);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (glassGestureDetector.onTouchEvent(ev)) {
+            return true;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    public boolean zoomIn(){
+        Log.d("testtest", "zoom in");
+        if (getScale() <= (getMaximumScale() - 0.5f))
+            setScale(getScale() + 0.5f, true);
+        return true;
+    }
+
+    public boolean zoomOut(){
+        Log.d("testtest", "zoom out");
+        if (getScale() >= (getMinimumScale() + 0.5f))
+            setScale(getScale() - 0.5f, true);
+        return true;
     }
 }
