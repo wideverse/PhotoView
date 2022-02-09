@@ -140,24 +140,6 @@ public class SimpleSampleActivity extends AppCompatActivity {
         mPhotoView.setOnMatrixChangeListener(new MatrixChangeListener());
         mPhotoView.setOnPhotoTapListener(new PhotoTapListener());
         mPhotoView.setOnSingleFlingListener(new SingleFlingListener());
-
-        Button zoomIn = findViewById(R.id.zoomIn);
-        Button zoomOut = findViewById(R.id.zoomOut);
-
-        zoomIn.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPhotoView.zoomIn();
-            }
-        });
-
-        zoomOut.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPhotoView.zoomOut();
-            }
-        });
-
     }
 
     private class PhotoTapListener implements OnPhotoTapListener {

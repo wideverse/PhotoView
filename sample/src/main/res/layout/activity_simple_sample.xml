@@ -30,25 +30,4 @@
         android:gravity="center"
         android:textColor="@android:color/white"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/zoomOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="-" />
-
-        <Button
-            android:id="@+id/zoomIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="+" />
-    </LinearLayout>
-
 </FrameLayout>

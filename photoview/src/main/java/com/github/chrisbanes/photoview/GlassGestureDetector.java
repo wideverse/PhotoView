@@ -18,6 +18,7 @@ public class GlassGestureDetector implements GestureDetector.OnGestureListener {
 
     interface GlassOnGestureListener {
         boolean onGesture(Gesture gesture);
+        boolean onGesture(Gesture gesture, MotionEvent event);
     }
 
     private static final int SWIPE_DISTANCE_THRESHOLD_PX = 100;
@@ -47,7 +48,7 @@ public class GlassGestureDetector implements GestureDetector.OnGestureListener {
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        return onGestureListener.onGesture(Gesture.TAP);
+        return onGestureListener.onGesture(Gesture.TAP, e);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class GlassGestureDetector implements GestureDetector.OnGestureListener {
 
     @Override
     public void onLongPress(MotionEvent e) {
-        onGestureListener.onGesture(Gesture.LONG_TAP);
+        onGestureListener.onGesture(Gesture.LONG_TAP, e);
     }
 
     /**

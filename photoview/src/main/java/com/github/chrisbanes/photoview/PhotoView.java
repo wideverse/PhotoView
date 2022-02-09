@@ -259,22 +259,19 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
     }
 
     @Override
-    public boolean onGesture(@NonNull GlassGestureDetector.Gesture gesture) {
+    public boolean onGesture(@NonNull GlassGestureDetector.Gesture gesture){
+        return false;
+    }
+
+    @Override
+    public boolean onGesture(@NonNull GlassGestureDetector.Gesture gesture, MotionEvent event) {
+        Float x = event.getX();
+        Float y = event.getY();
         switch (gesture) {
             case TAP:
-                Log.d("testtest", "tap");
-                if (getScale() <= (getMaximumScale() - 0.5f))
-                    setScale(getScale() + 0.5f, true);
-                else
-                    setScale(getMinimumScale(), true);
-                return true;
+                return zoomIn(x, y);
             case LONG_TAP:
-                Log.d("testtest", "long tap");
-                if (getScale() < getMaximumScale())
-                    setScale(getMaximumScale(), true);
-                else if (getScale() == getMaximumScale())
-                    setScale(getMinimumScale(), true);
-                return true;
+                return zoomMax(x, y);
             default:
                 return false;
         }
@@ -288,17 +285,21 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
         return super.dispatchTouchEvent(ev);
     }
 
-    public boolean zoomIn(){
+    public boolean zoomIn(float x, float y){
         Log.d("testtest", "zoom in");
-        if (getScale() <= (getMaximumScale() - 0.5f))
-            setScale(getScale() + 0.5f, true);
+        if (getScale() <= (getMaximumScale() - 1f))
+            setScale(getScale() + 1f, x, y, true);
+        else
+            setScale(getMinimumScale(), x, y, true);
         return true;
     }
 
-    public boolean zoomOut(){
-        Log.d("testtest", "zoom out");
-        if (getScale() >= (getMinimumScale() + 0.5f))
-            setScale(getScale() - 0.5f, true);
+    public boolean zoomMax(float x, float y){
+        Log.d("testtest", "long tap");
+        if (getScale() < getMaximumScale())
+            setScale(getMaximumScale(), x, y, true);
+        else if (getScale() == getMaximumScale())
+            setScale(getMinimumScale(), x, y, true);
         return true;
     }
 }
