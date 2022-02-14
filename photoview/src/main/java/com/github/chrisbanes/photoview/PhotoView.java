@@ -287,15 +287,15 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
 
     public boolean zoomIn(float x, float y){
         Log.d("testtest", "zoom in");
-        if (getScale() <= (getMaximumScale() - 1f))
-            setScale(getScale() + 1f, x, y, true);
+        if (getScale() <= (getMaximumScale() - 2f))
+            setScale(getScale() + 2f, x, y, true);
         else
             setScale(getMinimumScale(), x, y, true);
         return true;
     }
 
     public boolean zoomMax(float x, float y){
-        Log.d("testtest", "long tap");
+        Log.d("testtest", "zoom max");
         if (getScale() < getMaximumScale())
             setScale(getMaximumScale(), x, y, true);
         else if (getScale() == getMaximumScale())
