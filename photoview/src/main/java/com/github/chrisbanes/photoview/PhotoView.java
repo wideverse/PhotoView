@@ -269,6 +269,7 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
         Float y = event.getY();
         switch (gesture) {
             case TAP:
+                isZoomed();
                 return zoomIn(x, y);
             case LONG_TAP:
                 return zoomMax(x, y);
@@ -302,4 +303,14 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
             setScale(getMinimumScale(), x, y, true);
         return true;
     }
+
+    public boolean isZoomed(){
+        if (getScale() != getMinimumScale()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }
