@@ -15,6 +15,13 @@
  */
 package com.github.chrisbanes.photoview;
 
+import static android.view.KeyEvent.KEYCODE_DPAD_DOWN;
+import static android.view.KeyEvent.KEYCODE_DPAD_LEFT;
+import static android.view.KeyEvent.KEYCODE_DPAD_RIGHT;
+import static android.view.KeyEvent.KEYCODE_DPAD_UP;
+import static android.view.KeyEvent.KEYCODE_HOME;
+import static android.view.KeyEvent.KEYCODE_MENU;
+
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -23,6 +30,7 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -259,14 +267,34 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KEYCODE_MENU:
+                return zoomIn(0, 0);
+            case KEYCODE_HOME:
+                return zoomOut(0, 0);
+            case KEYCODE_DPAD_RIGHT:
+                return moveToRight();
+            case KEYCODE_DPAD_LEFT:
+                return moveToLeft();
+            case KEYCODE_DPAD_UP:
+                return moveUp();
+            case KEYCODE_DPAD_DOWN:
+                return moveDown();
+            default:
+                return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    @Override
     public boolean onGesture(@NonNull GlassGestureDetector.Gesture gesture){
         return false;
     }
 
     @Override
     public boolean onGesture(@NonNull GlassGestureDetector.Gesture gesture, MotionEvent event) {
-        Float x = event.getX();
-        Float y = event.getY();
+        float x = event.getX();
+        float y = event.getY();
         switch (gesture) {
             case TAP:
                 return zoomIn(x, y);
@@ -286,16 +314,25 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
     }
 
     public boolean zoomIn(float x, float y){
-        Log.d("testtest", "zoom in");
+        Log.d("test-gestures", "zoom in");
         if (getScale() <= (getMaximumScale() - 2f))
             setScale(getScale() + 2f, x, y, true);
+        else
+            setScale(getMaximumScale(), x, y, true);
+        return true;
+    }
+
+    public boolean zoomOut(float x, float y){
+        Log.d("test-gestures", "zoom out");
+        if (getScale() >= (getMinimumScale() + 2f))
+            setScale(getScale() - 2f, x, y, true);
         else
             setScale(getMinimumScale(), x, y, true);
         return true;
     }
 
     public boolean zoomMax(float x, float y){
-        Log.d("testtest", "zoom max");
+        Log.d("test-gestures", "zoom max");
         if (getScale() < getMaximumScale())
             setScale(getMaximumScale(), x, y, true);
         else if (getScale() == getMaximumScale())
@@ -304,11 +341,47 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
     }
 
     public boolean isZoomed(){
-        if (getScale() != getMinimumScale()) {
-            return true;
-        } else {
-            return false;
-        }
+        return getScale() != getMinimumScale();
+    }
+
+    public boolean moveToRight() {
+        float x = getX();
+        float y = getY();
+        float dx = 2f;
+        float dy = 2f;
+
+        attacher.setScale(getScale(), x + dx, y, true);
+        return true;
+    }
+
+    public boolean moveToLeft() {
+        float x = getX();
+        float y = getY();
+        float dx = 2f;
+        float dy = 2f;
+
+        attacher.setScale(getScale(), x - dx, y, true);
+        return true;
+    }
+
+    public boolean moveUp() {
+        float x = getX();
+        float y = getY();
+        float dx = 2f;
+        float dy = 2f;
+
+        attacher.setScale(getScale(), x, y + dy, true);
+        return true;
+    }
+
+    public boolean moveDown() {
+        float x = getX();
+        float y = getY();
+        float dx = 2f;
+        float dy = 2f;
+
+        attacher.setScale(getScale(), x, y - dy, true);
+        return true;
     }
 
 }
