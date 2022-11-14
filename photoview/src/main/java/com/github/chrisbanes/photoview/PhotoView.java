@@ -268,19 +268,19 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        float centerImageX = getDisplayRect().centerX();
+        float centerImageY = getDisplayRect().centerY();
         switch (keyCode) {
             case KEYCODE_MENU:
-                return zoomIn(0, 0);
-            case KEYCODE_HOME:
-                return zoomOut(0, 0);
+                return zoomIn(centerImageX, centerImageY);
             case KEYCODE_DPAD_RIGHT:
-                return moveToRight();
+                return moveToRight(centerImageX, centerImageY);
             case KEYCODE_DPAD_LEFT:
-                return moveToLeft();
+                return moveToLeft(centerImageX, centerImageY);
             case KEYCODE_DPAD_UP:
-                return moveUp();
+                return moveUp(centerImageX, centerImageY);
             case KEYCODE_DPAD_DOWN:
-                return moveDown();
+                return moveDown(centerImageX, centerImageY);
             default:
                 return super.onKeyDown(keyCode, event);
         }
@@ -318,15 +318,6 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
         if (getScale() <= (getMaximumScale() - 2f))
             setScale(getScale() + 2f, x, y, true);
         else
-            setScale(getMaximumScale(), x, y, true);
-        return true;
-    }
-
-    public boolean zoomOut(float x, float y){
-        Log.d("test-gestures", "zoom out");
-        if (getScale() >= (getMinimumScale() + 2f))
-            setScale(getScale() - 2f, x, y, true);
-        else
             setScale(getMinimumScale(), x, y, true);
         return true;
     }
@@ -344,43 +335,23 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
         return getScale() != getMinimumScale();
     }
 
-    public boolean moveToRight() {
-        float x = getX();
-        float y = getY();
-        float dx = 2f;
-        float dy = 2f;
-
-        attacher.setScale(getScale(), x + dx, y, true);
+    public boolean moveToRight(float x, float y) {
+        setScale(getScale(), x, y, false);
         return true;
     }
 
-    public boolean moveToLeft() {
-        float x = getX();
-        float y = getY();
-        float dx = 2f;
-        float dy = 2f;
-
-        attacher.setScale(getScale(), x - dx, y, true);
+    public boolean moveToLeft(float x, float y) {
+        setScale(getScale(), x, y, false);
         return true;
     }
 
-    public boolean moveUp() {
-        float x = getX();
-        float y = getY();
-        float dx = 2f;
-        float dy = 2f;
-
-        attacher.setScale(getScale(), x, y + dy, true);
+    public boolean moveUp(float x, float y) {
+        setScale(getScale(), x, y, false);
         return true;
     }
 
-    public boolean moveDown() {
-        float x = getX();
-        float y = getY();
-        float dx = 2f;
-        float dy = 2f;
-
-        attacher.setScale(getScale(), x, y - dy, true);
+    public boolean moveDown(float x, float y) {
+        setScale(getScale(), x, y, false);
         return true;
     }
 

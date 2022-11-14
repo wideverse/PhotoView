@@ -20,6 +20,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -140,6 +141,12 @@ public class SimpleSampleActivity extends AppCompatActivity {
         mPhotoView.setOnMatrixChangeListener(new MatrixChangeListener());
         mPhotoView.setOnPhotoTapListener(new PhotoTapListener());
         mPhotoView.setOnSingleFlingListener(new SingleFlingListener());
+    }
+
+    // Add this to get PhotoView onKeyDown called
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return mPhotoView.onKeyDown(keyCode, event);
     }
 
     private class PhotoTapListener implements OnPhotoTapListener {
