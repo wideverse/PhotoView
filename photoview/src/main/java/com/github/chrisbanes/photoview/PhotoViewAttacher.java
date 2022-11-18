@@ -102,7 +102,7 @@ public class PhotoViewAttacher implements View.OnTouchListener,
     float navigationDelta = 100f;
 
     public boolean moveToRight() {
-        if (navigationX < mImageView.getWidth() - navigationDelta)
+        if (navigationX < mImageView.getWidth())
             navigationX = navigationX + navigationDelta;
         Log.d("test-gestures", "move right - " + navigationX + "," + navigationY);
         setScale(getScale(), navigationX, navigationY, false);
@@ -126,7 +126,7 @@ public class PhotoViewAttacher implements View.OnTouchListener,
     }
 
     public boolean moveDown() {
-        if (navigationY < mImageView.getHeight()- navigationDelta)
+        if (navigationY < mImageView.getHeight())
             navigationY = navigationY + navigationDelta;
         Log.d("test-gestures", "move down - " + navigationX + "," + navigationY);
         setScale(getScale(), navigationX, navigationY, false);
