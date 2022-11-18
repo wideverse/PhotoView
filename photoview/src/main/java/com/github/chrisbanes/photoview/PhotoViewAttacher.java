@@ -20,6 +20,7 @@ import android.graphics.Matrix;
 import android.graphics.Matrix.ScaleToFit;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -95,6 +96,68 @@ public class PhotoViewAttacher implements View.OnTouchListener,
     private boolean mZoomEnabled = true;
     private ScaleType mScaleType = ScaleType.FIT_CENTER;
 
+
+    float navigationX;
+    float navigationY;
+    float navigationDelta = 100f;
+
+    public boolean moveToRight() {
+        if (navigationX < mImageView.getWidth() - navigationDelta)
+            navigationX = navigationX + navigationDelta;
+        Log.d("test-gestures", "move right - " + navigationX + "," + navigationY);
+        setScale(getScale(), navigationX, navigationY, false);
+        return true;
+    }
+
+    public boolean moveToLeft() {
+        if (navigationX > 0)
+            navigationX = navigationX - navigationDelta;
+        Log.d("test-gestures", "move left - " + navigationX + "," + navigationY);
+        setScale(getScale(), navigationX, navigationY, false);
+        return true;
+    }
+
+    public boolean moveUp() {
+        if (navigationY > 0)
+            navigationY = navigationY - navigationDelta;
+        Log.d("test-gestures", "move up - " + navigationX + "," + navigationY);
+        setScale(getScale(), navigationX, navigationY, false);
+        return true;
+    }
+
+    public boolean moveDown() {
+        if (navigationY < mImageView.getHeight()- navigationDelta)
+            navigationY = navigationY + navigationDelta;
+        Log.d("test-gestures", "move down - " + navigationX + "," + navigationY);
+        setScale(getScale(), navigationX, navigationY, false);
+        return true;
+    }
+
+
+    public boolean zoomIn(float x, float y){
+        Log.d("test-gestures", "zoom in");
+        if (getScale() <= (getMaximumScale() - 2f))
+            setScale(getScale() + 2f, x, y, true);
+        else
+            setScale(getMinimumScale(), x, y, true);
+        return true;
+    }
+
+    public boolean zoomMax(float x, float y){
+        Log.d("test-gestures", "zoom max");
+        if (getScale() < getMaximumScale())
+            setScale(getMaximumScale(), x, y, true);
+        else if (getScale() == getMaximumScale())
+            setScale(getMinimumScale(), x, y, true);
+        return true;
+    }
+
+    public boolean isZoomed(){
+        return getScale() != getMinimumScale();
+    }
+
+
+
     private OnGestureListener onGestureListener = new OnGestureListener() {
         @Override
         public void onDrag(float dx, float dy) {
@@ -162,6 +225,13 @@ public class PhotoViewAttacher implements View.OnTouchListener,
 
     public PhotoViewAttacher(ImageView imageView) {
         mImageView = imageView;
+
+        navigationX = imageView.getWidth();
+        navigationY = getImageViewHeight(imageView);
+
+        Log.d("test-gestures", "navigationX "+ navigationX);
+        Log.d("test-gestures", "navigationY "+ navigationY);
+
         imageView.setOnTouchListener(this);
         imageView.addOnLayoutChangeListener(this);
         if (imageView.isInEditMode()) {

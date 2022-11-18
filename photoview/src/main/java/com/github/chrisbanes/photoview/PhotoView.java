@@ -272,15 +272,16 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
         float centerImageY = getDisplayRect().centerY();
         switch (keyCode) {
             case KEYCODE_MENU:
-                return zoomIn(centerImageX, centerImageY);
+//                return attacher.zoomIn(centerImageX, centerImageY);
+                return attacher.zoomIn(0, 0);
             case KEYCODE_DPAD_RIGHT:
-                return moveToRight(centerImageX, centerImageY);
+                return attacher.moveToRight();
             case KEYCODE_DPAD_LEFT:
-                return moveToLeft(centerImageX, centerImageY);
+                return attacher.moveToLeft();
             case KEYCODE_DPAD_UP:
-                return moveUp(centerImageX, centerImageY);
+                return attacher.moveUp();
             case KEYCODE_DPAD_DOWN:
-                return moveDown(centerImageX, centerImageY);
+                return attacher.moveDown();
             default:
                 return super.onKeyDown(keyCode, event);
         }
@@ -297,9 +298,9 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
         float y = event.getY();
         switch (gesture) {
             case TAP:
-                return zoomIn(x, y);
+                return attacher.zoomIn(x, y);
             case LONG_TAP:
-                return zoomMax(x, y);
+                return attacher.zoomMax(x, y);
             default:
                 return false;
         }
@@ -311,48 +312,6 @@ public class PhotoView extends AppCompatImageView implements GlassGestureDetecto
             return true;
         }
         return super.dispatchTouchEvent(ev);
-    }
-
-    public boolean zoomIn(float x, float y){
-        Log.d("test-gestures", "zoom in");
-        if (getScale() <= (getMaximumScale() - 2f))
-            setScale(getScale() + 2f, x, y, true);
-        else
-            setScale(getMinimumScale(), x, y, true);
-        return true;
-    }
-
-    public boolean zoomMax(float x, float y){
-        Log.d("test-gestures", "zoom max");
-        if (getScale() < getMaximumScale())
-            setScale(getMaximumScale(), x, y, true);
-        else if (getScale() == getMaximumScale())
-            setScale(getMinimumScale(), x, y, true);
-        return true;
-    }
-
-    public boolean isZoomed(){
-        return getScale() != getMinimumScale();
-    }
-
-    public boolean moveToRight(float x, float y) {
-        setScale(getScale(), x, y, false);
-        return true;
-    }
-
-    public boolean moveToLeft(float x, float y) {
-        setScale(getScale(), x, y, false);
-        return true;
-    }
-
-    public boolean moveUp(float x, float y) {
-        setScale(getScale(), x, y, false);
-        return true;
-    }
-
-    public boolean moveDown(float x, float y) {
-        setScale(getScale(), x, y, false);
-        return true;
     }
 
 }
