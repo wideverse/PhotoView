@@ -100,6 +100,7 @@ public class PhotoViewAttacher implements View.OnTouchListener,
     float navigationX;
     float navigationY;
     float navigationDelta = 100f;
+    private float zoomDelta = 1.5f;
 
     public boolean moveToRight() {
         if (navigationX < mImageView.getWidth())
@@ -136,8 +137,8 @@ public class PhotoViewAttacher implements View.OnTouchListener,
 
     public boolean zoomIn(float x, float y){
         Log.d("test-gestures", "zoom in");
-        if (getScale() <= (getMaximumScale() - 2f))
-            setScale(getScale() + 2f, x, y, true);
+        if (getScale() <= (getMaximumScale() - zoomDelta))
+            setScale(getScale() + zoomDelta, x, y, true);
         else
             setScale(getMinimumScale(), x, y, true);
         return true;
